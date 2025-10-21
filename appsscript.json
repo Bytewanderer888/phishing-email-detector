@@ -1,19 +1,62 @@
 {
-  "timeZone": "America/New_York",
-  "dependencies": {
-    "enabledAdvancedServices": [
-      {
-        "userSymbol": "Gmail",
-        "serviceId": "gmail",
-        "version": "v1"
+    "timeZone": "America/New_York",
+    "dependencies": {
+      "enabledAdvancedServices": [
+        {
+          "userSymbol": "Gmail",
+          "serviceId": "gmail",
+          "version": "v1"
+        }
+      ]
+    },
+    "exceptionLogging": "STACKDRIVER",
+    "runtimeVersion": "V8",
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/gmail.readonly",
+      "https://www.googleapis.com/auth/gmail.addons.execute",
+      "https://www.googleapis.com/auth/script.external_request",
+      "https://www.googleapis.com/auth/gmail.compose",
+      "https://www.googleapis.com/auth/gmail.addons.current.action.compose",
+      "https://www.googleapis.com/auth/gmail.addons.current.message.metadata",
+      "https://www.googleapis.com/auth/gmail.addons.current.message.readonly",
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/script.locale"
+    ],
+    "addOns": {
+      "common": {
+        "name": "Phishing Detector",
+        "logoUrl": "https://raw.githubusercontent.com/Bytewanderer888/phishing-plugin/main/logo.png",
+        "useLocaleFromApp": true,
+        "homepageTrigger": {
+          "runFunction": "onHomepage"
+        },
+        "openLinkUrlPrefixes": [
+          "https://raw.githubusercontent.com/",
+          "https://github.com/",
+          "https://support.google.com/",
+          "https://developers.google.com/"
+        ]
+      },
+      "gmail": {
+        "contextualTriggers": [
+          {
+            "unconditional": {},
+            "onTriggerFunction": "onGmailMessageOpen"
+          }
+        ],
+        "composeTrigger": {
+          "selectActions": [
+            {
+              "text": "Check for Phishing",
+              "runFunction": "onGmailCompose"
+            }
+          ],
+          "draftAccess": "METADATA"
+        }
       }
+    },
+    "urlFetchWhitelist": [
+      "https://raw.githubusercontent.com/",
+      "https://github.com/"
     ]
-  },
-  "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8",
-  "oauthScopes": [
-    "https://www.googleapis.com/auth/gmail.readonly",
-    "https://www.googleapis.com/auth/gmail.compose",
-    "https://www.googleapis.com/auth/script.external_request"
-  ]
-}
+  }
